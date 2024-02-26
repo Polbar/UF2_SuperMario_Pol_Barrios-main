@@ -698,8 +698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3974ec4bcbe782a4db612e62ba1c9e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoureText: {fileID: 1996058981}
-  score: 0
+  scoreText: {fileID: 0}
+  tagObjetivo: 
 --- !u!4 &1252445896
 Transform:
   m_ObjectHideFlags: 0
@@ -1422,8 +1422,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3974ec4bcbe782a4db612e62ba1c9e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoureText: {fileID: 1996058981}
-  score: 0
+  scoreText: {fileID: 0}
+  tagObjetivo: 
 --- !u!114 &1996058981
 MonoBehaviour:
   m_ObjectHideFlags: 0

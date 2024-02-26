@@ -7,12 +7,14 @@ public class MenuManager : MonoBehaviour
     public Text scoreText;
     private int score;
 
-    // Etiqueta del objeto que al ser destruido incrementará la puntuación
-    public string tagObjetivo;
-
     void Start()
     {
         LoadScore();
+        // Suscribe la función CoinCollected a OnCoinCollected
+        Coin.OnCoinCollected += CoinCollected;
+
+        // Suscribe la función EnemyDestroyedHandler a OnEnemyDestroyed
+        Enemy.OnEnemyDestroyed += EnemyDestroyedHandler;
     }
 
     void Update()
@@ -35,29 +37,28 @@ public class MenuManager : MonoBehaviour
         scoreText.text = "Puntuación: " + score.ToString();
     }
 
+    void CoinCollected()
+    {
+        // Incrementa la puntuación cuando se notifica que una moneda ha sido recolectada
+        score++;
+    }
+
+    void EnemyDestroyedHandler()
+    {
+        // Incrementa la puntuación cuando se notifica que un enemigo ha sido destruido
+        score++;
+    }
+
     public void LoadFirstLevel()
     {
         // Carga el primer nivel
         SceneManager.LoadScene("Nivel 1");
     }
 
-    void OnTriggerEnter(Collider other)
+    // Asegúrate de desuscribir la función CoinCollected y EnemyDestroyedHandler cuando el script se destruye
+    private void OnDestroy()
     {
-        // Verifica si el jugador colisiona con un objeto que tenga la etiqueta "Coin" o "Goombas_1"
-        if (other.CompareTag("Coin") || other.CompareTag("Goombas_1"))
-        {
-            // Incrementa la puntuación
-            score++;
-        }
-    }
-
-    void OnDestroy()
-    {
-        // Verifica si el objeto destruido tiene la etiqueta correcta
-        if (gameObject.CompareTag(tagObjetivo))
-        {
-            // Incrementa la puntuación
-            score++;
-        }
+        Coin.OnCoinCollected -= CoinCollected;
+        Enemy.OnEnemyDestroyed -= EnemyDestroyedHandler;
     }
 }
