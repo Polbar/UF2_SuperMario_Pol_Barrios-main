@@ -17,6 +17,16 @@ public class PlayerMove : MonoBehaviour
     AudioSource source;
     public AudioClip jumpSound;
 
+    public Transform bulletSpawn;
+
+    public GameObject bulletPrefab;
+
+    private bool canShoot = true;
+
+    public float timer;
+
+    public float rateOfFire = 1;
+
     void Awake()
     {
         rBody = GetComponent<Rigidbody2D>();
@@ -52,6 +62,22 @@ public class PlayerMove : MonoBehaviour
             Debug.Log("yooooo");
         }*/
         
+        
+        Shoot();
+
+        Jump();
+
+        Movement();
+    }
+
+    void FixedUpdate()
+    {
+         rBody.velocity = new Vector2(inputHorizontal * movementSpeed, rBody.velocity.y);
+        
+    }
+
+    void Jump()
+    {
         if(Input.GetButtonDown("Jump") && sensor.isGrounded == true)
         {
                rBody.AddForce(new Vector2(0,1) * jumpForce, ForceMode2D.Impulse);   
@@ -59,26 +85,46 @@ public class PlayerMove : MonoBehaviour
                source.PlayOneShot(jumpSound);
         }
         
+    }
+
+    void Shoot()
+    {
+        if(!canShoot)
+        {
+            timer += Time.deltaTime;
+
+            if(timer >= rateOfFire)
+            {
+                canShoot = true;
+                timer = 0;
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.F) && canShoot)
+        {
+            Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+
+            canShoot = false;
+        }
+    }
+
+    void Movement()
+    {
         if(inputHorizontal < 0)
         {
-            render.flipX = true;
+            //render.flipX = true;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
             anim.SetBool("IsRunning", true);
         }
         else if(inputHorizontal > 0)
         {
-            render.flipX = false;
+            //render.flipX = false;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
             anim.SetBool("IsRunning", true);
         }
         else 
         {
             anim.SetBool("IsRunning", false);
         }
-    }
-
-    void FixedUpdate()
-    {
-         rBody.velocity = new Vector2(inputHorizontal * movementSpeed, rBody.velocity.y);
-        
     }
 }
 

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Goombas
   - coin
+  - Coin
+  - EnemySpawn
   layers:
   - Default
   - TransparentFX
